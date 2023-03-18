@@ -1,0 +1,27 @@
+{
+  "name": "rest-api-nodejs-mysql-students",
+  "version": "1.0.0",
+  "description": "restapi nodejs mysql express",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/index.js"
+  },
+  "keywords": [
+    "restapi",
+    "backend-nodejs"
+  ],
+  "author": "alfonzo65",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "morgan": "^1.10.0",
+    "mysql2": "^3.2.0",
+    "nodemailer": "^6.9.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.21"
+  }
+}
