@@ -1,4 +1,4 @@
-const conexion = require("../db.js")
+const { encryptar, conexion } = require("../db.js")
 
 const students = {};
 
@@ -24,16 +24,25 @@ students.registerNewUser = async (req,res) =>{
 
 students.newUser = async (req,res) =>{
 	try {
-		const { id, password, id_student } = req.body
+		const { username, password, id_student } = req.body
 		
-		if( id && password && id_student ){
+		if( username && password && id_student ){
 			const [ data ]= await conexion.execute("SELECT id_student FROM student WHERE id_student = (?)",
 				[id_student])
 			if( data.length == 0 ){
 				res.status(409).send({message:"You need register your information to create an user"})
 			} else {
+
+				// check if exist the User -> Id in the database
+				const [ user ] = await conexion.query("SELECT userId FROM users WHERE userId = (?)", username);
+				
+				if(user[0])
+					res.status(409).send({ message: "this username exists"})
+				
+				// Encryt the password
+				const hash = await encryptar( password );
 				await conexion.query("INSERT INTO users VALUES (?, ?, ?)", 
-				[id, password, id_student] );
+				[username, hash, id_student] );
 				res.status(200).send("New User registed!")
 			}
 
@@ -45,6 +54,7 @@ students.newUser = async (req,res) =>{
 		res.status(500).send("Internal server Error")
 	}	
 }
+
 
 students.singIn = (req,res) => {
 	res.status(200).send({message:"Login"})

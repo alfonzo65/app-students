@@ -21,8 +21,12 @@ app.use(express.static(path.join(__dirname,'./public')))
 // rutas
 app.use( students )
 
-app.get("/", async (req,res)=>{
-	res.send("Welcome student ... :D")
+app.get("/",(req,res)=>{
+	res.status(200).send({message:"Welcome"});
+})
+
+app.get("/ping", async (req,res)=>{
+	res.status(200).send({ message: "Server Online!"})
 })
 
 // ruta final 404
