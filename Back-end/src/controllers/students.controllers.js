@@ -58,22 +58,26 @@ students.newUser = async (req,res) =>{
 
 students.singIn = async (req,res,next) => {
 
-	const { id, password } = req.body
+	try {
+		const { id, password } = req.body
 
-	const [data] = await conexion.query("SELECT userId, password FROM users WHERE userId = (?)",[id])
+		const [data] = await conexion.query("SELECT userId, password FROM users WHERE userId = (?)",[id])
 
-	if(data.length == 0)
-		return res.status(400).json({ Access: "Denegade" , message: "Password or ID Invalid", success:0})
+		if(data.length == 0)
+			return res.status(400).json({ Access: "Denegade" , message: "Password or ID Invalid", success:0})
 	
-	const [ user ] = data;
-	const validate = await comparar( password , user.password )
+		const [ user ] = data;
+		const validate = await comparar( password , user.password )
 
-	if( !validate )
-		return res.status(404).json({message:"Password or ID Invalid"})
+		if( !validate )
+			return res.status(404).json({message:"Password or ID Invalid"})
 	
-	const token = jwt.sign( { username: user.userId }, process.env.SECRET,{expiresIn:'1h'})
+		const token = jwt.sign( { username: user.userId }, process.env.SECRET,{expiresIn:'1h'})
 
-	return res.status(200).json({ Access: "Aprob" , token: token, success:1, username: user.userId})
+		return res.status(200).json({ Access: "Aprob" , token: token, success:1, username: user.userId})
+	} catch(e) {
+		return res.status(500).send("Internal server Error")
+	}
 
 }
 
