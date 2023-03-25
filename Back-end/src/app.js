@@ -9,6 +9,7 @@ const app = express()
 
 // importando rutas
 const students = require("./routes/students.js")
+const courses = require("./routes/courses.js")
 
 // setting
 app.set('port', process.env.SERVER_PORT ? process.env.SERVER_PORT : 3000 )
@@ -22,6 +23,7 @@ app.use(express.static(path.join(__dirname,'./public')))
 
 // rutas
 app.use( students )
+app.use( courses )
 
 app.get("/",(req,res)=>{
 	res.status(200).send({message:"Welcome"});

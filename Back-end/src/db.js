@@ -12,7 +12,7 @@ const conexion = createPool({
 if( conexion )
 	console.log("DB is connected")
 else
-	console.log("Error BD conexion")
+	console.log("Error DB conexion")
 
 async function comparar( password , hash ){
 	return await bcrypt.compare(password, hash);

@@ -14,7 +14,7 @@ students.registerNewUser = async (req,res) =>{
 				[id, country, state])
 			return res.status(201).json({message:"add student!", success:1})
 		}else{
-			return res.status(409).json({ message: "Data insufficient or Invalid Data"})
+			return res.status(409).json({ message: "Data insufficient or Invalid Data",success: 0})
 		}
 		
 	} catch(e) {
@@ -37,7 +37,7 @@ students.newUser = async (req,res) =>{
 				const [ user ] = await conexion.query("SELECT userId FROM users WHERE userId = (?)", username);
 				
 				if(user[0])
-					return res.status(409).json({ message: "this username exists"})
+					return res.status(409).json({ message: "this username exists", success: 0})
 				
 				// Encryt the password
 				const hash = await encryptar( password );
@@ -47,7 +47,7 @@ students.newUser = async (req,res) =>{
 			}
 
 		} else {
-			return res.status(409).json({ message:"Data insufficient or Invalid Data"})
+			return res.status(409).json({ message:"Data insufficient or Invalid Data",success: 0})
 		}
 
 	} catch(e) {
@@ -56,7 +56,7 @@ students.newUser = async (req,res) =>{
 }
 
 
-students.singIn = async (req,res,next) => {
+students.singIn = async (req,res) => {
 
 	try {
 		const { id, password } = req.body
@@ -70,7 +70,7 @@ students.singIn = async (req,res,next) => {
 		const validate = await comparar( password , user.password )
 
 		if( !validate )
-			return res.status(404).json({message:"Password or ID Invalid"})
+			return res.status(404).json({message:"Password or ID Invalid",success: 0})
 	
 		const token = jwt.sign( { username: user.userId }, process.env.SECRET,{expiresIn:'1h'})
 
