@@ -14,8 +14,8 @@ if( conexion )
 else
 	console.log("Error BD conexion")
 
-function comparar( password , hash ){
-	return compare(password, hash);
+async function comparar( password , hash ){
+	return await bcrypt.compare(password, hash);
 }
 
 async function encryptar( password ){

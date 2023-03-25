@@ -1,8 +1,9 @@
 const express = require("express");
+require("./config.js")
 const morgan = require("morgan");
 const path = require('node:path');
-require("./config.js")
 const conexion = require("./db.js")
+const cors = require("cors")
 
 const app = express()
 
@@ -15,6 +16,7 @@ app.set('port', process.env.SERVER_PORT ? process.env.SERVER_PORT : 3000 )
 //Middlewares
 app.use(express.json())
 app.use(morgan('dev'))
+app.use(cors())
 app.use(express.urlencoded({extended: false}))
 app.use(express.static(path.join(__dirname,'./public')))
 
